@@ -1,0 +1,6 @@
+apply plugin: 'com.android.library'
+//Android开发平台的AOP框架:https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx
+apply plugin: 'android-aspectjx'
+android {
+    compileSdkVersion 29
+}
