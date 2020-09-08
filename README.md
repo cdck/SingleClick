@@ -1,4 +1,4 @@
-
+[![](https://jitpack.io/v/cdck/SingleClick.svg)](https://jitpack.io/#cdck/SingleClick)
 #### 依赖配置：
 ##### 1. Project下build.gradle配置
 ```
