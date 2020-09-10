@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#指定保留所有注释
+#-keepattributes *Annotation*
+#关闭优化
+-dontoptimize
+#关闭混淆：混淆是默认开启的。混淆使类和类成员名称变成短的随机名
+-dontobfuscate
+#保持xlk.clicklibrary下面所有类文件，包括其子包里面类文件
+#-keep class xlk.clicklibrary.
+#-keep interface xlk.clicklibrary.

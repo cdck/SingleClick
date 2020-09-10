@@ -61,44 +61,49 @@ public class SingleClickAspect {
             Object[] args = joinPoint.getArgs();
             View view = findViewInMethodArgs(args);
             if (view != null) {
-                int id = view.getId();
+                int clickId = view.getId();
                 if (hasAnnotationPresent) {
                     SingleClick annotation = method.getAnnotation(SingleClick.class);
                     //指明了哪些需要限制
                     int[] specify = annotation.specify();
-                    for (int i : specify) {
-                        if (i == id) {
+                    for (int id : specify) {
+                        if (id == clickId) {
                             if (canClick(interval)) {
                                 mLastClickTime = System.currentTimeMillis();
                                 joinPoint.proceed();
-                                return;
                             }
+                            return;
                         }
                     }
-                    //按id值排除不防止双击的按钮点击
+                    //指明了哪些不需要限制
                     int[] except = annotation.except();
-                    for (int i : except) {
-                        if (i == id) {
+                    for (int id : except) {
+                        if (id == clickId) {
                             joinPoint.proceed();
                             return;
                         }
                     }
-                    //有注解且没有指定按钮
+                    //没有指定限制按钮
                     if (specify.length == 0) {
                         if (canClick(interval)) {
                             mLastClickTime = System.currentTimeMillis();
                             joinPoint.proceed();
-                            return;
                         }
+                        return;
+                    } else {//不在指定限制按钮集合中
+                        joinPoint.proceed();
+                        return;
                     }
+                } else {
+                    //全局限制了点击事件： SingleClickManager.isGlobalClick为true时
+                    if (canClick(interval)) {
+                        mLastClickTime = System.currentTimeMillis();
+                        joinPoint.proceed();
+                    }
+                    return;
                 }
-                //全局限制了点击事件 SingleClickManager.isGlobalClick为true时
-                if (canClick(interval)) {
-                    mLastClickTime = System.currentTimeMillis();
-                    joinPoint.proceed();
-                }
-                return;
             }
+            //View为null就不拦截
             joinPoint.proceed();
         } catch (Exception e) {
             //出现异常不拦截点击事件
